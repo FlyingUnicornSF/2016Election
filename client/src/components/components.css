@@ -1,0 +1,18 @@
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-right: 5vw;
+}
+#piechart-container{
+  display: block;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 10vw;
+  top: 10vh;
+  background-color: white;
+  max-width: 50vw;
+  max-height: 50vh;
+}
