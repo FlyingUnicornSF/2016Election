@@ -1,0 +1,17 @@
+{
+  "name": "presidential_campaign_contributions",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "chart.js": "^2.7.3",
+    "concurrently": "^4.0.1",
+    "express": "^4.16.4",
+    "underscore": "^1.9.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "concurrently --kill-others \"npm start --prefix server\" \"npm start --prefix client\""
+  },
+  "author": "Akiyo Marukawa",
+  "license": "ISC"
+}

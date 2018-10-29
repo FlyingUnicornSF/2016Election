@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Chart from 'chart.js';
-import _ from 'underscore'
+//import _ from 'underscore'
 
 class Histogram extends Component {
   constructor(props){
@@ -29,7 +29,11 @@ class Histogram extends Component {
   componentDidMount() {
     this.createBarChart();
     this.fetchData("contribution").then(data => {
-      this.setState({candidates : data});
+      this.setState({
+        candidates : data,
+        maxFilterAmount: data[0].totalContributionAmount,
+        minFilterAmount: data[data.length - 1].totalContributionAmount
+      });
     });
   }
   
@@ -91,15 +95,18 @@ class Histogram extends Component {
   }
 
   updateBarChart(){
+    let candidateIDs = [];
     let candidatesArray = [];
     let totalContributionAmountArray = [];
     this.state.candidates.forEach(candidate => {
-      if(candidate.totalContributionAmount > this.state.minFilterAmount &&
-        candidate.totalContributionAmount < this.state.maxFilterAmount){
+      if(candidate.totalContributionAmount >= this.state.minFilterAmount &&
+        candidate.totalContributionAmount <= this.state.maxFilterAmount){
+        candidateIDs.push(candidate.candidateID);
         candidatesArray.push(candidate.name);
         totalContributionAmountArray.push(candidate.totalContributionAmount);
       }
     });
+    this.barChart.data.candidateIDs = candidateIDs;
     this.barChart.data.labels = candidatesArray;
     this.barChart.data.datasets[0].data = totalContributionAmountArray;
     this.barChart.update();
@@ -115,8 +122,8 @@ class Histogram extends Component {
     // take action only when correct area of the chart is clicked
     if(candidateOnClick !== undefined){
       let index = candidateOnClick._index;
-      let candidateID = this.state.candidates[index]["candidateID"]
-      this.fetchData('contribution/'+ candidateID).then(data=>{  
+      let candidateID = this.barChart.data.candidateIDs[index];
+      this.fetchData('contribution/'+ candidateID).then(data=>{ 
         this.setState({committees:data});     
       })
     }
